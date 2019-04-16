@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#282828</color>
+    <color name="normal">#00ffffff</color>
+    <color name="hide">#404040</color>
+    <color name="lightblack">#282828</color>
+    <color name="lighterblack">#282828</color>
+    <color name="navClear">#0000b988</color>
+</resources>

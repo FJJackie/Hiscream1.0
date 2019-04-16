@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/time_iv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/list_item_icon_height"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="3dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/record_tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_weight="8"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="3dp"
+        android:textColor="@color/lightblack"
+        android:textSize="20dp"/>
+
+    <ImageView
+        android:id="@+id/delete_iv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/list_item_icon_height"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="3dp"
+        android:layout_weight="1"/>
+</LinearLayout>

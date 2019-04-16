@@ -1,0 +1,47 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="MyButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/normal</item>
+    </style>
+    <style name="loadingDialogStyle" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 对话框是否有遮盖 -->
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--Toolbar标题文字大小-->
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <!--没有ActionBar主题，自定义SearchView样式-->
+    <style name="AppTheme.NoActionBar2" parent="AppTheme">
+        <item name="colorPrimary">#00ffffff</item>
+        <item name="colorPrimaryDark">#878787</item>
+        <item name="colorAccent">@color/hide</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--设置menu中item的图标颜色-->
+        <item name="android:textColorSecondary">@color/lightblack</item>
+        <!--引入自定义的SearchView样式-->
+        <item name="searchViewStyle">@style/Widget.SearchView</item>
+    </style>
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="defaultQueryHint">请输入搜索内容...</item>
+        <item name="searchHintIcon">@null</item>
+    </style>
+</resources>
