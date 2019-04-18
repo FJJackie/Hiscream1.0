@@ -89,6 +89,7 @@ public class FaceDetectionThread extends Thread {
             return;
         }
 
+        //maxFaces = 1 只找一张可信度最高的脸
         FaceDetector d = new FaceDetector(_currentFrame.getWidth(),
                 _currentFrame.getHeight(), 1);
 

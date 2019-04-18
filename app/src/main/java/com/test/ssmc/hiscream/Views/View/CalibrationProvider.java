@@ -361,7 +361,7 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
         webView.loadUrl(js);
     }
     */
-    /*
+    /**
     这个方法使用js代码改变了字体和背景
     依据传入的字体大小改变网页前景和背景颜色
      */

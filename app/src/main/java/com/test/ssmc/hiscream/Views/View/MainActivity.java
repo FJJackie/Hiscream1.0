@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 toWebActivity();
             }
         }, 5000);//延迟5S后发送handler信息
-
     }
 
     TimerTask task = new TimerTask() {

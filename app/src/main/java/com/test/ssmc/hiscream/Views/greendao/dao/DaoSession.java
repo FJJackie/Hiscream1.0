@@ -20,28 +20,28 @@ import java.util.Map;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig companyDaoConfig;
+    private final DaoConfig historyRecordDaoConfig;
 
-    private final HistoryRecordDao companyDao;
+    private final HistoryRecordDao historyRecordDao;
 
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
 
-        companyDaoConfig = daoConfigMap.get(HistoryRecordDao.class).clone();
-        companyDaoConfig.initIdentityScope(type);
+        historyRecordDaoConfig = daoConfigMap.get(HistoryRecordDao.class).clone();
+        historyRecordDaoConfig.initIdentityScope(type);
 
-        companyDao = new HistoryRecordDao(companyDaoConfig, this);
+        historyRecordDao = new HistoryRecordDao(historyRecordDaoConfig, this);
 
-        registerDao(HistoryRecord.class, companyDao);
+        registerDao(HistoryRecord.class, historyRecordDao);
     }
     
     public void clear() {
-        companyDaoConfig.clearIdentityScope();
+        historyRecordDaoConfig.clearIdentityScope();
     }
 
-    public HistoryRecordDao getCompanyDao() {
-        return companyDao;
+    public HistoryRecordDao getHistoryRecordDao() {
+        return historyRecordDao;
     }
 
 }

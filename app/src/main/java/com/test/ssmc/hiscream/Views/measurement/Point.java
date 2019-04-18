@@ -1,5 +1,8 @@
 package com.test.ssmc.hiscream.Views.measurement;
 
+/**
+* 双眼距离、设备和用户的距离组成的点
+* */
 public class Point {
 	//测得的双眼距离
 	private final float _eyeDistance;

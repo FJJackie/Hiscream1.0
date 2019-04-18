@@ -34,7 +34,6 @@ public class CalibrationDialog extends Dialog implements DialogInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_calivration);
+        setContentView(R.layout.dialog_calibration);
     }
-
 }

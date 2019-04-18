@@ -62,11 +62,11 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
 
     private Face _foundFace = null;
 
-    private int _threashold = CALIBRATION_MEASUREMENTS;
+    private int _threshold = CALIBRATION_MEASUREMENTS;//阈值、临界值
 
-    private FaceDetectionThread _currentFaceDetectionThread;
+    private FaceDetectionThread _currentFaceDetectionThread;//人脸检测线程
 
-    private List<Point> _points;
+    private List<Point> _points;//人脸双眼距离、设备和用户距离 组成的点的List
 
     protected final Paint _middlePointColor = new Paint();
     protected final Paint _eyeColor = new Paint();
@@ -211,16 +211,17 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
             _points = new ArrayList<Point>();
             _calibrating = true;
             _calibrationsLeft = CALIBRATION_MEASUREMENTS;
-            _threashold = CALIBRATION_MEASUREMENTS;
+            _threshold = CALIBRATION_MEASUREMENTS;
         }
     }
 
     private void doneCalibrating() {
+        Log.d(TAG, "doneCalibrating: ");
         _calibrated = true;
         _calibrating = false;
         _currentFaceDetectionThread = null;
 
-        _threashold = AVERAGE_THREASHHOLD;
+        _threshold = AVERAGE_THREASHHOLD;
 
         _distanceAtCalibrationPoint = _currentAvgEyeDistance;
         MessageHUB.get().sendMessage(MessageHUB.DONE_CALIBRATION, null);
@@ -244,14 +245,13 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
             return;
         }
 
+        //获取人脸数据
         _foundFace = _currentFaceDetectionThread.getCurrentFace();
-
-        _points.add(new Point(_foundFace.eyesDistance(),
-                CALIBRATION_DISTANCE_A4_MM
-                        * (_distanceAtCalibrationPoint / _foundFace
-                        .eyesDistance())));
-
-        while (_points.size() > _threashold) {
+        float eyesDistance = _foundFace.eyesDistance();//测得的双眼距离
+        float deviceDistance = CALIBRATION_DISTANCE_A4_MM * (_distanceAtCalibrationPoint / eyesDistance);//测得的设备和用户的距离
+        _points.add(new Point(eyesDistance, deviceDistance));
+        //_points只保存 _threshold = 10 个人脸的Point
+        while (_points.size() > _threshold) {
             _points.remove(0);
         }
 
@@ -259,12 +259,11 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
         for (Point p : _points) {
             sum += p.getEyeDistance();
         }
-
-        _currentAvgEyeDistance = sum / _points.size();
-
+        _currentAvgEyeDistance = sum / _points.size();//计算得到 当前人眼间距的平均值
         _currentDistanceToFace = CALIBRATION_DISTANCE_A4_MM
                 * (_distanceAtCalibrationPoint / _currentAvgEyeDistance);
-
+        Log.d(TAG, "updateMeasurement1: " + _currentAvgEyeDistance);
+        Log.d(TAG, "updateMeasurement2: " + _distanceAtCalibrationPoint);
         _currentDistanceToFace = Util.MM_TO_CM(_currentDistanceToFace);
 
         MeasurementStepMessage message = new MeasurementStepMessage();

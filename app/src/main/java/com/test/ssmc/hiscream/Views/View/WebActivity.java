@@ -95,12 +95,13 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        setToolbar();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //get the company DAO
+        //get the historyRecord DAO
         DaoSession daoSession = ((MyApplication)getApplication()).getDaoSession();
-        mHistoryRecordDao = daoSession.getCompanyDao();
-        //query all employee to show in the list
+        mHistoryRecordDao = daoSession.getHistoryRecordDao();
+        //query all historyRecord to show in the list
         mHistoryRecordList = mHistoryRecordDao.queryBuilder().list();
         setupView();
         handleIntent(getIntent());
@@ -288,16 +289,10 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
     }
 
 
-    //设置toolbar
-    private void setToolbar(){
-        //使用ToolBar控件替代ActionBar控件
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.toolbar, menu);
 
         //set searchView configuration to search something
@@ -392,8 +387,7 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
     }
 
     private void setupView() {
-
-        //Set listView
+        //get listView
         mListView = (ListView) findViewById(R.id.list_view);
 
         //instantiate adapter which used to hold data show in normal list
@@ -431,7 +425,7 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
 
     /**
      *
-     * @param id id of employee in database table
+     * @param id id of historyRecord in database table
      */
     private void showDeleteAlertDialog(final long id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -456,7 +450,7 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
         builder.create().show();
     }
 
-    //refresh the listView to show latest data
+    //刷新列表并添加最新数据
     private void refreshList() {
         mHistoryRecordList.clear();
         mHistoryRecordList.addAll(mHistoryRecordDao.queryBuilder().list());

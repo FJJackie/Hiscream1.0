@@ -39,7 +39,7 @@ public class CalibrationActivity extends BaseActivity implements MessageListener
         cameraSurfaceView = findViewById(R.id.surface_camera);
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(
                 (int) (0.95 * this.getResources().getDisplayMetrics().widthPixels),
-                (int) (0.6 * this.getResources().getDisplayMetrics().heightPixels));
+                (int) (0.75 * this.getResources().getDisplayMetrics().heightPixels));
 
         layout.setMargins(0, (int) (0.05 * this.getResources()
                 .getDisplayMetrics().heightPixels), 0, 0);
