@@ -52,6 +52,7 @@ import com.test.ssmc.hiscream.Views.greendao.dao.HistoryRecordDao;
 import com.test.ssmc.hiscream.Views.greendao.dao.DaoSession;
 import com.test.ssmc.hiscream.Views.utils.BaseActivity;
 
+
 import java.util.List;
 
 public class WebActivity extends BaseActivity implements UpDateWebViewInterface {
@@ -318,7 +319,10 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
                     buttonBar.setVisibility(View.VISIBLE);
 
                     HistoryRecord recordItem = new HistoryRecord(null, url, mSalary);
-                    mHistoryRecordDao.insert(recordItem);
+                    List<HistoryRecord> recordItemExistList = mHistoryRecordDao.queryBuilder().where(HistoryRecordDao.Properties.Name.eq(recordItem.getName())).list();
+                    if(recordItemExistList.size() == 0){
+                        mHistoryRecordDao.insert(recordItem);
+                    }
                     refreshList();
 
                     url = URLFactory.handleURL(url);
@@ -331,13 +335,7 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
             //当内容发生改变时触发
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.equals("")) {
-                    mListView.setAdapter(mAdapter);
-                    refreshList();
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
             }
         });
 
@@ -379,7 +377,6 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             mQueryList = mHistoryRecordDao.queryBuilder().where(HistoryRecordDao.Properties.Name.eq(query)).list();
-
             //instantiate adapter which used to hold queryResult show in queryList
             mQueryAdapter = new ListAdapter(this, R.layout.list_item, mQueryList);
             mListView.setAdapter(mQueryAdapter);
