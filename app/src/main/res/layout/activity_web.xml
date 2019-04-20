@@ -59,7 +59,7 @@
             android:id="@+id/buttonBar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:weightSum="4"
+            android:weightSum="3"
             android:orientation="horizontal"
             android:visibility="visible">
 
@@ -72,6 +72,15 @@
                     android:clickable="true"
                     android:theme="@style/MyButton"/>
 
+            <ImageButton
+                android:id="@+id/home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/home_button"
+                android:clickable="true"
+                android:theme="@style/MyButton" />
+
 
                 <ImageButton
                     android:id="@+id/front"
@@ -82,23 +91,14 @@
                     android:clickable="true"
                     android:theme="@style/MyButton"  />
 
-                <ImageButton
-                    android:id="@+id/home"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/home_button"
-                    android:clickable="true"
-                    android:theme="@style/MyButton" />
-
-                <ImageButton
+                <!--<ImageButton
                     android:id="@+id/setting"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@drawable/setting_botton"
                     android:clickable="true"
-                    android:theme="@style/MyButton" />
+                    android:theme="@style/MyButton" />-->
 
         </LinearLayout>
     </LinearLayout>

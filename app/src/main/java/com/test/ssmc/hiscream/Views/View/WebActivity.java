@@ -186,12 +186,12 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
         homeButton = findViewById(R.id.home);
         homeButton.setOnClickListener(v -> webView.loadUrl("https://www.v2ex.com/"));
 
-        //绑定设置键
+        /*//绑定设置键
         settingButton = findViewById(R.id.setting);
         settingButton.setOnClickListener(v -> {
             Intent intent = new Intent(WebActivity.this, SettingActivity.class);
             startActivity(intent);
-        });
+        });*/
 
         //绑定悬浮按钮
         hiscreenButton = findViewById(R.id.hiscreenButton);
@@ -319,6 +319,7 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
                     buttonBar.setVisibility(View.VISIBLE);
 
                     HistoryRecord recordItem = new HistoryRecord(null, url, mSalary);
+                    //先去查找数据库，判断数据库中是否存在本条搜索记录
                     List<HistoryRecord> recordItemExistList = mHistoryRecordDao.queryBuilder().where(HistoryRecordDao.Properties.Name.eq(recordItem.getName())).list();
                     if(recordItemExistList.size() == 0){
                         mHistoryRecordDao.insert(recordItem);
@@ -344,7 +345,7 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
             //打开searchView时触发
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                //searchView打开事件
+                //searchView打开时触发
                 relativeLayout.setVisibility(View.VISIBLE);
                 webView.setVisibility(View.GONE);
                 buttonBar.setVisibility(View.GONE);
