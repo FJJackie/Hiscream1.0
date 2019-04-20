@@ -58,7 +58,7 @@ import java.util.List;
 public class WebActivity extends BaseActivity implements UpDateWebViewInterface {
     private WebView webView;
 
-    private ImageButton backButton, frontButton, settingButton, homeButton;
+    private ImageButton backButton, frontButton, homeButton;
     private LinearLayout buttonBar;
     private FloatingActionButton hiscreenButton;//进入隐私模式的button控件
     private CalibrationProvider calibrationProvider;
@@ -186,13 +186,6 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
         homeButton = findViewById(R.id.home);
         homeButton.setOnClickListener(v -> webView.loadUrl("https://www.v2ex.com/"));
 
-        /*//绑定设置键
-        settingButton = findViewById(R.id.setting);
-        settingButton.setOnClickListener(v -> {
-            Intent intent = new Intent(WebActivity.this, SettingActivity.class);
-            startActivity(intent);
-        });*/
-
         //绑定悬浮按钮
         hiscreenButton = findViewById(R.id.hiscreenButton);
         //按键响应 修改主题颜色
@@ -204,7 +197,6 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
                 buttonBar.setBackgroundColor(0x00ffffff);
                 backButton.setBackgroundColor(0x00ffffff);
                 frontButton.setBackgroundColor(0x00ffffff);
-                settingButton.setBackgroundColor(0x00ffffff);
                 homeButton.setBackgroundColor(0x00ffffff);
                 toolbar.setBackgroundColor(0x00ffffff);
                 hiscreenButton.setImageResource(R.drawable.eye);
@@ -215,7 +207,6 @@ public class WebActivity extends BaseActivity implements UpDateWebViewInterface 
                 backButton.setBackgroundColor(0x91131313);
                 homeButton.setBackgroundColor(0x91131313);
                 frontButton.setBackgroundColor(0x91131313);
-                settingButton.setBackgroundColor(0x91131313);
                 toolbar.setBackgroundColor(0x91131313);
                 hiscreenButton.setImageResource(R.drawable.hide);
             }

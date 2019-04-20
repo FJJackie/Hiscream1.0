@@ -81,7 +81,6 @@
                 android:clickable="true"
                 android:theme="@style/MyButton" />
 
-
                 <ImageButton
                     android:id="@+id/front"
                     android:layout_width="0dp"
@@ -90,16 +89,6 @@
                     android:src="@drawable/front_botton"
                     android:clickable="true"
                     android:theme="@style/MyButton"  />
-
-                <!--<ImageButton
-                    android:id="@+id/setting"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/setting_botton"
-                    android:clickable="true"
-                    android:theme="@style/MyButton" />-->
-
         </LinearLayout>
     </LinearLayout>
 
