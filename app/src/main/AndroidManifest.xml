@@ -18,7 +18,7 @@
 
         <activity android:name=".Views.View.CalibrationActivity" />
         <activity
-            android:name=".Views.View.MainActivity"
+            android:name=".Views.View.WelcomeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,6 @@
             android:name=".Views.View.WebActivity"
             android:theme="@style/AppTheme.NoActionBar2"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity android:name=".Views.View.SettingActivity" />
 
         <service
             android:name=".MyService"

@@ -1,7 +1,5 @@
-package com.test.ssmc.hiscream.Views;
+package com.test.ssmc.hiscream.Views.utils;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class URLFactory {
     public static String handleURL(String url){

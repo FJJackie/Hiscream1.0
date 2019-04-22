@@ -11,7 +11,7 @@ import com.test.ssmc.hiscream.Views.utils.BaseActivity;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class WelcomeActivity extends BaseActivity implements View.OnClickListener {
 
     private int skipTime = 5;//跳过倒计时提示5秒
     private TextView tv_skip;
@@ -22,7 +22,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_welcome);
         tv_skip = findViewById(R.id.tv);//跳过
         tv_skip.setOnClickListener(this);//跳过监听
         timer.schedule(task, 1000, 1000);//等待时间一秒，停顿时间一秒
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void toWebActivity(){
-        Intent intent=new Intent(MainActivity.this,WebActivity.class);
+        Intent intent=new Intent(WelcomeActivity.this,WebActivity.class);
         startActivity(intent);
         finish();
     }

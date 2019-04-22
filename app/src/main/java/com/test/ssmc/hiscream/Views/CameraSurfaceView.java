@@ -32,14 +32,15 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
     /**
      * Represents the standard height of a peace of a4 paper e.g. 29.7cm
      */
-    public static final int CALIBRATION_DISTANCE_A4_MM = 294;
+    public static final int CALIBRATION_DISTANCE_A4_MM = 297;
 
     public static final int CALIBRATION_MEASUREMENTS = 10;
 
     public static final int AVERAGE_THREASHHOLD = 5;
 
     /**
-     * 在校准点测量出的人脸到设备的
+     *在校准点测量出的人眼距离
+     * 校准点和屏幕距离为A4纸长度是，后面测量到的人脸距离为实际距离
      * Measured distance at calibration point
      */
     private float _distanceAtCalibrationPoint = -1;

@@ -13,6 +13,7 @@ import com.test.ssmc.hiscream.Views.messages.MeasurementStepMessage;
 import com.test.ssmc.hiscream.Views.messages.MessageHUB;
 import com.test.ssmc.hiscream.Views.messages.MessageListener;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -34,7 +35,7 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
     Button _calibrateButton;
 
     private Sensor sensor;
-    private double lb;
+    private double eBrightness;//环境亮度值
 
     private int count = 0;
 
@@ -72,10 +73,13 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
 
         //注册事件监听
         sensorManager = (SensorManager) upDateWebViewInterface.getContext().getSystemService(SENSOR_SERVICE);
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT); // 获取光线传感器
+        if(sensor != null){
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+
         //注册事件监听器
         MessageHUB.get().registerListener(this);
-
     }
 
 
@@ -100,23 +104,21 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event) {
         Log.i(TAG, "onSensorChanged(SensorEvent)");
-        lb = event.values[0];
+        //获取环境亮度值
+        float[] values = event.values;
+            switch (event.sensor.getType()) {
+                //动态更新光线信息
+                case Sensor.TYPE_LIGHT:
+                    eBrightness = values[0];
+                    brightnessValue = values[0];
+                    break;
+            }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.i(TAG, "onAccuracyChanged(Sensor,int)");
     }
-
-    /**
-     * @param brightness 亮度
-     */
-//    private void setBrightness(float brightness) {
-//        WindowManager.LayoutParams lp = getWindow().getAttributes();
-//        lp.screenBrightness = brightness;
-//        getWindow().setAttributes(lp);
-//    }
-//
 
     /**
      * 2018/12/06
@@ -171,7 +173,7 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
 
     /**
      * 2018/12/07
-     * 获取最佳亮度值 LP
+     * 获取最佳亮度值 B
      * 论文公式 4-3
      *
      * @param message MeasurementStepMessage
@@ -184,19 +186,22 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
         double heightPixel = displayMetrics.heightPixels;
         double widthPixel = displayMetrics.widthPixels;
 
-        //论文公式4-3   vD0：对应论文中的MaxD
-        //疑问：widthPixel?? 与论文不对应
-        final double vD0 = screenSizeInch / (Math.sqrt(Math.pow((1.0 * widthPixel / heightPixel), 2) + 1) * widthPixel * Math.tan(1 / 60.0 * Math.PI / 180));
+        //论文公式4-3   Dmax：对应论文中的Dmax
+        //疑问：widthPixel?? 与论文不对应       公式2-7
+        final double Dmax = screenSizeInch /
+                (Math.sqrt(Math.pow((1.0 * widthPixel / heightPixel), 2) + 1) * widthPixel * Math.tan(1 / 60.0 * Math.PI / 180));
         //获取的人脸到设备的距离
-        double vDp = message.getDistToFace();
+        distToFace = message.getDistToFace();
 
         //l0 目标亮度值
-        //l0 ??? 为什么等于lb+30
-        double l0 = lb + 30;
-        //计算最佳亮度 公式4-7
-        double lP = lb + Math.pow((vDp / vD0), 2) * (l0 - lb);
-
-        return lP;
+        //l0 ??? 为什么等于eBrightness+30
+        double bBrightness = eBrightness + 30;
+        //计算目标亮度 公式4-7
+        //bBrightness:屏幕本身最佳亮度      eBrightness:环境亮度   iBrightness:当前阅读距离下目标亮度
+        double iBrightness = eBrightness + Math.pow((distToFace / Dmax), 2) * (bBrightness - eBrightness);
+        Log.d(TAG, "getOptimalBrightness: 环境亮度：" + eBrightness);
+        Log.d(TAG, "getOptimalBrightness: 屏幕背景亮度：" + iBrightness);
+        return iBrightness;
     }
 
     public int getOptimalFontSize(MeasurementStepMessage message) {
@@ -243,11 +248,11 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
         double heightPixel = metrics.heightPixels;
         double widthPixel = metrics.widthPixels;
 
-        //论文公式4-3   vD0：对应论文中的MaxD
+        //论文公式4-3   Dmax：对应论文中的MaxD
         //疑问：widthPixel?? 与论文不对应
-        final double vD0 = screenSizeInch / (Math.sqrt(Math.pow((1.0 * widthPixel / heightPixel), 2) + 1) * widthPixel * Math.tan(1 / 60.0 * Math.PI / 180));
+        final double Dmax = screenSizeInch / (Math.sqrt(Math.pow((1.0 * widthPixel / heightPixel), 2) + 1) * widthPixel * Math.tan(1 / 60.0 * Math.PI / 180));
         //获取的人脸到设备的距离
-        double vDp = message.getDistToFace();
+        double DistoFace = message.getDistToFace();
 
         //l0 目标亮度值
         //l0 ??? 为什么等于lb+30
@@ -256,13 +261,12 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
         */
 
 
-        //屏幕亮度调整到最佳亮度
-        double lP = getOptimalBrightness(message);
-        float brightness = lP / 255 >= 1 ? 1 : (float) lP / 255;
+        //屏幕亮度调整到目标亮度
+        double iBrightness = getOptimalBrightness(message);
+        float brightness = iBrightness / 255 >= 1 ? 1 : (float) iBrightness / 255;
         // TODO: 2019/3/31 更新亮度
-        Log.d(TAG, "updateUI: brightness"+brightness);
+        Log.d(TAG, "updateUI: 最终屏幕亮度"+brightness);
         upDateWebViewInterface.updateBrightness(brightness);
-        //getWindow().setAttributes(layoutParams);
 
         //更改网页显示效果
         /**
@@ -293,7 +297,9 @@ public class CalibrationProvider implements MessageListener, SensorEventListener
             //改变字体大小
             Log.d(TAG, "updateUI: change font size: " + fontSize);
             changeFontSizeAndContrast(fontSize);
-            upDateWebViewInterface.ShowSnackbar("font size:" + fontSize);
+            BigDecimal bg = new BigDecimal(distToFace);
+            double distToFaceWeb = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            upDateWebViewInterface.ShowSnackbar("font size:" + fontSize + "  " + "distance:" + distToFaceWeb + "cm");
         }
 //        /**计算角度
 //         *
